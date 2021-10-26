@@ -3,6 +3,9 @@ a takeout food ordering system based on Spring Cloud , which allows user to orde
 
 ## application structure
 eureka server
+
 config server
+
 eureka client:consume the following four microservice
+
 account, menu, order, user----four microservice registered with eureka server
