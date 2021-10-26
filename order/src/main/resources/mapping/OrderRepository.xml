@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zk.repository.OrderRepository">
+
+    <resultMap id="orderMap" type="com.zk.entity.Order">
+        <id column="id" property="id"></id>
+        <result column="date" property="date"></result>
+        <result column="state" property="state"></result>
+        <association column="mid" property="menu" select="com.zk.repository.MenuRepository.findById"></association>
+        <association column="uid" property="user" select="com.zk.repository.UserRepository.findById"></association>
+    </resultMap>
+
+    <insert id="save" parameterType="com.zk.entity.Order">
+         insert into `order`(uid,mid,date,state) values(#{user.id},#{menu.id},date,0)
+    </insert>
+
+    <select id="findAllByUid" resultMap="orderMap">
+        select id,mid,date,state from `order` where uid= #{param3} limit #{param1},#{param2}
+    </select>
+
+    <select id="countByUid" parameterType="int" resultType="int">
+        select count(*) from `order` where uid= #{uid}
+    </select>
+
+    <select id="findAllByState" resultMap="orderMap">
+        select id,uid,mid,date,state from `order` where state= #{param3} limit #{param1},#{param2}
+    </select>
+
+    <update id="updateState" parameterType="int">
+        update `order` set state =1 where id=#{id}
+    </update>
+
+    <select id="countByState" parameterType="int" resultType="int">
+        select count(*) from `order` where state= #{state}
+    </select>
+</mapper>
+

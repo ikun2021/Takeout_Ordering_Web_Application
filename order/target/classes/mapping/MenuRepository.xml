@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zk.repository.MenuRepository">
+    <resultMap id="menuMap" type="com.zk.entity.Menu">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="price" property="price"></result>
+        <result column="flavor" property="flavor"></result>
+        <association column="tid" property="type" select="com.zk.repository.TypeRepository.findById"></association>
+    </resultMap>
+    
+ <select id="findAll" resultMap="menuMap">
+     select * from menu limit #{param1},#{param2}
+ </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="menuMap">
+        select * from menu where id= #{id}
+    </select>
+    
+    <insert id="save" parameterType="com.zk.entity.Menu">
+        insert into menu(name,price,flavor,tid) values(#{name},#{price},#{flavor},#{type.id})
+    </insert>
+
+    <update id="update" parameterType="com.zk.entity.Menu">
+        update menu set name= #{name}, price= #{price}, flavor= #{flavor} ,tid=#{type.id} where id = #{id}
+    </update>
+    
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from menu where id= #{id}
+    </delete>
+    
+    <select id="count" resultType="int">
+        select count(id) from menu
+    </select>
+</mapper>
+
